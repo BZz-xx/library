@@ -28,7 +28,7 @@ class ThreadPoolServer
 	public:
 		void Run(int (*) (string, char* ));
 	private:
-		bool Handle(SocketWrapper* clntSock, int (*) (string, char* ));
+//		bool Handle(SocketWrapper* clntSock, int (*) (string, char* ));
 };
 
 #endif // THREADPOOLSERVER_H

@@ -1,6 +1,6 @@
 #include "ThreadPoolServer.h"
 
-ThreadPoolServer::ThreadPoolServer(int port, char* fileName) : handleStopReq(false);
+ThreadPoolServer::ThreadPoolServer(int port, char* fileName) : handleStopReq(false)
 {
 	listner = new Listner(port);
 	pool = new ThreadPool(POOLSIZE);
@@ -13,8 +13,8 @@ ThreadPoolServer::~ThreadPoolServer()
 	listner->Close();
 	delete listner;
 
-	threadPool->Stop();
-	delete threadPool();
+	pool->Stop();
+	delete pool;
 
 	delete taskQueue;
 }
@@ -26,11 +26,14 @@ void ThreadPoolServer::Run(int ( * Handler ) ( string, char*))
 
 	while(!handleStopReq)
 	{
-		SocketWrapper * clntSock = servSock->Accept();
+		SocketWrapper * clntSock = listner->Accept();
 		taskQueue->Enqueue(clntSock);
 	}
 }
 
+/*
 bool ThreadPoolServer::Handle(int (* Handler) (string, char*))
 {
+	return fasle;
 }
+*/
