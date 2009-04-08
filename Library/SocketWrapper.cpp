@@ -33,12 +33,12 @@ void SocketWrapper::Listen(int maxConnection)
 		perror("error LISTEN");
 }
 
-SocketWrapper * SocketWrapper::Accept()
+SocketWrapper SocketWrapper::Accept()
 {
 	int connfd = accept(sockid, 0, 0);
 	if (connfd < 0)
 		perror("error ACCEPT");
-	return new SocketWrapper(connfd);
+	return SocketWrapper(connfd);
 }
 
 int SocketWrapper::Receive(char* buffer, int length)

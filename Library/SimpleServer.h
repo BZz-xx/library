@@ -8,7 +8,7 @@ class SimpleServer
 {
 //FIELDS
 private:
-	SocketWrapper * servSock;
+	SocketWrapper servSock;
 	int port;
 	static const unsigned short LISTENQ = 1024;
 	static const unsigned short MAXLINE = 4096;
@@ -25,7 +25,7 @@ public:
 	sockaddr_in GetServerAddres();
 
 private:
-	bool Handle(SocketWrapper* clntSock, int (*) (string, char* ));
+	bool Handle(SocketWrapper clntSock, int (*) (string, char* ));
 };
 
 #endif /*SIMPLESERVER_H_*/

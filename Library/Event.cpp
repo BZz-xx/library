@@ -2,12 +2,16 @@
 
 Event::Event()
 {
-	pthread_cond_init(&event, 0);
+	int err = pthread_cond_init(&event, 0);
+	if (err < 0)
+		perror("error in Event Constructor");
 }
 
 Event::~Event()
 {
-	pthread_cond_destroy(&event);
+	int err = pthread_cond_destroy(&event);
+	if (err < 0)
+		perror("error in Event Destructor");
 }
 
 EventType Event::GetEvent()

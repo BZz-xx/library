@@ -1,49 +1,42 @@
 #include "TaskQueue.h"
 
-TaskQueue::TaskQueue() : stopped(false)
+TaskQueue::TaskQueue() : stopped(false), monitor(), taskQueue()
 {
-	monitor = new Monitor();
-    taskQueue = new queue <SocketWrapper * , list <SocketWrapper *> > ();
 }
 
 TaskQueue::~TaskQueue()
 {
-	monitor->Enter();
-    while(! taskQueue->empty())
+	monitor.Enter();
+    while(! taskQueue.empty())
     {
-        SocketWrapper * s = Dequeue();
-        s->Shutdown(SocketShutdown(Both));
-        s->Close();
-        delete s;
+        SocketWrapper s = Dequeue();
+        s.Shutdown(SocketShutdown(Both));
+        s.Close();
     }
-    delete taskQueue;
-    monitor->Leave();
-    delete monitor;
+    monitor.Leave();
 }
 
-void TaskQueue::Enqueue(SocketWrapper * task)
+void TaskQueue::Enqueue(SocketWrapper task)
 {
-    monitor->Enter();
+    monitor.Enter();
 	if (!stopped)
-		taskQueue->push(task);
-	monitor->Leave();
-    monitor->PulseAll();
+		taskQueue.push(task);
+	monitor.Leave();
+    monitor.PulseAll();
 }
 
-SocketWrapper * TaskQueue::Dequeue()
+SocketWrapper TaskQueue::Dequeue()
 {
-	SocketWrapper * sw;
-	monitor->Enter();
-	while (taskQueue->empty() && !stopped)
-		monitor->Wait();
+	monitor.Enter();
+	while (taskQueue.empty() && !stopped)
+		monitor.Wait();
 	if (stopped)
 	{
-		monitor->Leave();
-		return new SocketWrapper(InvalidSocket);
+		monitor.Leave();
+		return SocketWrapper(InvalidSocket);
 	}
-	sw = taskQueue->front();
-	taskQueue->pop();
-    monitor->Leave();
-    monitor->PulseAll();
+	SocketWrapper sw = taskQueue.front();
+	taskQueue.pop();
+    monitor.Leave();
     return sw;
 }

@@ -11,8 +11,8 @@ class TaskQueue
 //FIELDS
     private:
 		bool stopped;
-		Monitor * monitor;
-        queue <SocketWrapper * , list <SocketWrapper * > > * taskQueue;
+		Monitor monitor;
+        queue <SocketWrapper, list <SocketWrapper> > taskQueue;
 
 //METHODS
     public:
@@ -20,8 +20,8 @@ class TaskQueue
         ~TaskQueue();
 
     public:
-        void Enqueue(SocketWrapper * task);
-        SocketWrapper * Dequeue();
+        void Enqueue(SocketWrapper task);
+        SocketWrapper Dequeue();
 };
 
 #endif // TASKQUEUE_H

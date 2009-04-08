@@ -15,13 +15,17 @@ Thread::~Thread()
 void Thread::Run()
 {
 	cout<<"Thread "<<threadId<<" started"<<endl;
-	pthread_create(&thread, 0, routine, 0);
+	int err = pthread_create(&thread, 0, routine, 0);
+	if (err < 0)
+		perror("Error Thread Run(ptread_create)");
 }
 
 void Thread::Stop()
 {
 	int retval = -1;
-	pthread_detach(thread);
+	int err = pthread_detach(thread);
+	if (err < 0)
+		perror("Error Thread Stop(ptread_detach)");
 	cout<<"Thread "<<threadId<<" closed"<<endl;
 	pthread_exit(&retval);
 }

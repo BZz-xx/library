@@ -2,6 +2,7 @@
 #define MUTEX_H
 
 #include <stdlib.h>
+#include <iostream>
 #include <pthread.h>
 
 typedef pthread_mutex_t MutexType;

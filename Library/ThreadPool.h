@@ -8,14 +8,14 @@ class ThreadPool
 {
 //FIELDS
 	int capacity;
-	list<Thread*> pool;
+	list<Thread> pool;
 //METHODS
 	public:
 		ThreadPool(int volume);
 		~ThreadPool();
 
 	public:
-		void Start(void * (*onRequest)(void *));
+		void Start(void * (*Routine)(void *));
 		void Stop();
 };
 

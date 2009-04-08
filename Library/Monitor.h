@@ -8,8 +8,8 @@ class Monitor
 {
 //FIELDS
 	private:
-		Mutex * mutex;
-		Event * event;
+		Mutex mutex;
+		Event event;
 //METHODS
 	public:
 		Monitor();

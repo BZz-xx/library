@@ -32,7 +32,7 @@ public:
 public:
 	void Bind(sockaddr_in * addr);
 	void Listen(int maxConnection = SOMAXCONN);
-	SocketWrapper* Accept();
+	SocketWrapper Accept();
 
 	int Receive(char* buffer, int length);
 	int Receive(char* buffer, int offset, int length);

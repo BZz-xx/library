@@ -1,33 +1,26 @@
 #include "ThreadPoolServer.h"
 
-ThreadPoolServer::ThreadPoolServer(int port, char* fileName) : handleStopReq(false)
+ThreadPoolServer::ThreadPoolServer(int port, char* fileName) : handleStopReq(false), listner(port), pool(POOLSIZE), taskQueue()
 {
-	listner = new Listner(port);
-	pool = new ThreadPool(POOLSIZE);
-	taskQueue = new TaskQueue();
 }
 
 ThreadPoolServer::~ThreadPoolServer()
 {
-	listner->Shutdown(SocketShutdown(Both));
-	listner->Close();
-	delete listner;
+	listner.Shutdown(SocketShutdown(Both));
+	listner.Close();
 
-	pool->Stop();
-	delete pool;
-
-	delete taskQueue;
+	pool.Stop();
 }
 
 void ThreadPoolServer::Run(int ( * Handler ) ( string, char*))
 {
 	//threadPool->Start();
-	listner->Listen();
+	listner.Listen();
 
 	while(!handleStopReq)
 	{
-		SocketWrapper * clntSock = listner->Accept();
-		taskQueue->Enqueue(clntSock);
+		SocketWrapper clntSock = listner.Accept();
+		taskQueue.Enqueue(clntSock);
 	}
 }
 

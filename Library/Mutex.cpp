@@ -2,12 +2,14 @@
 
 Mutex::Mutex()
 {
-    pthread_mutex_init ( &mutex, NULL );
+    pthread_mutex_init( &mutex, NULL );
 }
 
 Mutex::~Mutex()
 {
-    pthread_mutex_destroy( &mutex );
+    int err = pthread_mutex_destroy( &mutex );
+    if (err < 0)
+		perror("error in Mutex Destructor");
 }
 
 MutexType Mutex::GetMutex()
@@ -22,10 +24,14 @@ bool Mutex::TryLock()
 
 void Mutex::Lock()
 {
-	pthread_mutex_lock( &mutex );
+	int err = pthread_mutex_lock( &mutex );
+	if (err < 0)
+		perror("error Mutex Lock");
 }
 
 void Mutex::Unlock()
 {
-    pthread_mutex_unlock( &mutex );
+    int err = pthread_mutex_unlock( &mutex );
+    if (err < 0)
+		perror("error Mutex Unlock");
 }

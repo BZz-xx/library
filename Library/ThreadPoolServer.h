@@ -10,9 +10,9 @@
 class ThreadPoolServer
 {
 //FIELDS
-	Listner* listner;
-	ThreadPool* pool;
-	TaskQueue* taskQueue;
+	Listner listner;
+	ThreadPool pool;
+	TaskQueue taskQueue;
 	int port;
 	bool handleStopReq;
 	static const unsigned short POOLSIZE = 4;

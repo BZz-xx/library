@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <iostream>
 #include <stdlib.h>
 #include <pthread.h>
 
