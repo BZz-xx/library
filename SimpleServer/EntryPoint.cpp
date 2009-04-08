@@ -30,9 +30,8 @@ int main( int argc, char** argv )
     int Port = atoi ( argv [ 1 ] );
 	char* fileName = argv[2];
 
-	SimpleServer * server = new SimpleServer(Port, fileName);
-	server->Run( &WriteDataToFile);
-	delete server;
+	SimpleServer server = SimpleServer(Port, fileName);
+	server.Run( &WriteDataToFile);
 
 	return 0;
 }
