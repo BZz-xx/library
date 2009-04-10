@@ -4,22 +4,25 @@
 #include "../Library/SocketWrapper.h"
 #include "../Library/Monitor.h"
 #include "../Library/ThreadPool.h"
+#include "../Library/Task.h"
 #include "../Library/TaskQueue.h"
 #include "../Library/Listner.h"
+#include <iostream>
 
 class ThreadPoolServer
 {
 //FIELDS
 	Listner listner;
 	ThreadPool pool;
-	TaskQueue taskQueue;
+	static TaskQueue taskQueue;
 	int port;
-	bool handleStopReq;
+	static bool handleStopReq;
 	static const unsigned short POOLSIZE = 4;
 	static const unsigned short LISTENQ = 1024;
 	static const unsigned short MAXLINE = 4096;
 	string fileName;
 	char buffer[MAXLINE + 1];
+	int ( * handle ) ( string, char*);
 //METHODS
 	public:
 		ThreadPoolServer(int port, char* fileName);
@@ -28,7 +31,8 @@ class ThreadPoolServer
 	public:
 		void Run(int (*) (string, char* ));
 	private:
-//		bool Handle(SocketWrapper* clntSock, int (*) (string, char* ));
+		bool Handle(SocketWrapper sock);
+		static void* TaskHandle(void* argv);
 };
 
 #endif // THREADPOOLSERVER_H

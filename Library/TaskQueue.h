@@ -1,7 +1,7 @@
 #ifndef TASKQUEUE_H
 #define TASKQUEUE_H
 
-#include "SocketWrapper.h"
+#include "Task.h"
 #include "Monitor.h"
 #include <queue>
 #include <list>
@@ -12,7 +12,7 @@ class TaskQueue
     private:
 		bool stopped;
 		Monitor monitor;
-        queue <SocketWrapper, list <SocketWrapper> > taskQueue;
+        queue <Task, list <Task> > taskQueue;
 
 //METHODS
     public:
@@ -20,8 +20,9 @@ class TaskQueue
         ~TaskQueue();
 
     public:
-        void Enqueue(SocketWrapper task);
-        SocketWrapper Dequeue();
+        void Enqueue(Task task);
+        void Stop();
+        Task Dequeue();
 };
 
 #endif // TASKQUEUE_H

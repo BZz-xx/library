@@ -9,14 +9,14 @@ TaskQueue::~TaskQueue()
 	monitor.Enter();
     while(! taskQueue.empty())
     {
-        SocketWrapper s = Dequeue();
-        s.Shutdown(SocketShutdown(Both));
-        s.Close();
+        Task t = Dequeue();
+        t.Shutdown(SocketShutdown(Both));
+        t.Close();
     }
     monitor.Leave();
 }
 
-void TaskQueue::Enqueue(SocketWrapper task)
+void TaskQueue::Enqueue(Task task)
 {
     monitor.Enter();
 	if (!stopped)
@@ -25,7 +25,7 @@ void TaskQueue::Enqueue(SocketWrapper task)
     monitor.PulseAll();
 }
 
-SocketWrapper TaskQueue::Dequeue()
+Task TaskQueue::Dequeue()
 {
 	monitor.Enter();
 	while (taskQueue.empty() && !stopped)
@@ -33,10 +33,15 @@ SocketWrapper TaskQueue::Dequeue()
 	if (stopped)
 	{
 		monitor.Leave();
-		return SocketWrapper(InvalidSocket);
+		return Task::getStopTask();
 	}
-	SocketWrapper sw = taskQueue.front();
+	Task t = taskQueue.front();
 	taskQueue.pop();
     monitor.Leave();
-    return sw;
+    return t;
+}
+
+void TaskQueue::Stop()
+{
+	stopped = true;
 }
