@@ -22,8 +22,8 @@ class Mutex {
         bool TryLock();
 
     private:
-        Mutex( const Mutex& );
-        void operator = ( const Mutex& );
+//        Mutex( const Mutex& );
+//        void operator = ( const Mutex& );
 };
 
 #endif // MUTEX_H

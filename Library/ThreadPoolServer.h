@@ -9,30 +9,36 @@
 #include "../Library/Listner.h"
 #include <iostream>
 
+using namespace std;
 class ThreadPoolServer
 {
 //FIELDS
-	Listner listner;
-	ThreadPool pool;
+	static Listner listner;
+	static ThreadPool pool;
 	static TaskQueue taskQueue;
-	int port;
+	static const int port = 10080;
 	static bool handleStopReq;
 	static const unsigned short POOLSIZE = 4;
 	static const unsigned short LISTENQ = 1024;
 	static const unsigned short MAXLINE = 4096;
-	string fileName;
-	char buffer[MAXLINE + 1];
-	int ( * handle ) ( string, char*);
+	static string fileName;
 //METHODS
+//static constructor. WTF??
+/*
+Compiling: ThreadPoolServer.cpp
+In file included from /root/library/Library/ThreadPoolServer.cpp:1:
+/root/library/Library/ThreadPoolServer.h:26: error: constructor cannot be static member function
+*/
 	public:
-		ThreadPoolServer(int port, char* fileName);
+		ThreadPoolServer(int port, string name);
 		~ThreadPoolServer();
 
 	public:
-		void Run(int (*) (string, char* ));
+		static void Run();
 	private:
-		bool Handle(SocketWrapper sock);
 		static void* TaskHandle(void* argv);
+		static bool SocketHandle(SocketWrapper sock);
+		static int DataHandle (char* Data);
 };
 
 #endif // THREADPOOLSERVER_H

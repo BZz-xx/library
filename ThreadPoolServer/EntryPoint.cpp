@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "../Library/Mutex.h"
+#include "../Library/ThreadPoolServer.h"
 using namespace std;
 
 int WriteDataToFile(string FileName, char* Data)
@@ -65,9 +66,9 @@ TEST(LockableObject, test1)
 int main( int argc, char** argv )
 {
 
-	::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
-	/*if (argc < 3)
+	/*::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();*/
+	if (argc < 3)
 	{
 		cerr << "usage: ./Server portNum filename" << endl;
                 return -1;
@@ -76,5 +77,8 @@ int main( int argc, char** argv )
     int Port = atoi ( argv [ 1 ] );
 	char* fileName = argv[2];
 
-	return 0;*/
+	ThreadPoolServer tps = ThreadPoolServer(1, "");
+	tps.Run( &WriteDataToFile );
+
+	return 0;
 }
