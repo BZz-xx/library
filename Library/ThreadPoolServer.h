@@ -8,6 +8,7 @@
 #include "../Library/TaskQueue.h"
 #include "../Library/Listner.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 class ThreadPoolServer
@@ -30,7 +31,7 @@ In file included from /root/library/Library/ThreadPoolServer.cpp:1:
 /root/library/Library/ThreadPoolServer.h:26: error: constructor cannot be static member function
 */
 	public:
-		ThreadPoolServer(int port, string name);
+		ThreadPoolServer();
 		~ThreadPoolServer();
 
 	public:

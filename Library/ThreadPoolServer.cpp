@@ -2,14 +2,14 @@
 
 using namespace std;
 
+bool ThreadPoolServer::handleStopReq = false;
 ThreadPool ThreadPoolServer::pool = ThreadPool(ThreadPoolServer::POOLSIZE);
 TaskQueue ThreadPoolServer::taskQueue = TaskQueue();
 Listner ThreadPoolServer::listner = Listner(ThreadPoolServer::port);
 string ThreadPoolServer::fileName = "qwerty";
 
-ThreadPoolServer::ThreadPoolServer(int portNum, string name)
+ThreadPoolServer::ThreadPoolServer()
 {
-	fileName = name;
 }
 
 ThreadPoolServer::~ThreadPoolServer()
@@ -27,13 +27,14 @@ void ThreadPoolServer::Run()
 	listner.Listen();
 
 	while(!handleStopReq)
-	{
 		taskQueue.Enqueue(Task(listner.Accept(), false));
-	}
+
+	pool.Stop();
 }
 
 void* ThreadPoolServer::TaskHandle(void* argv)
 {
+	cout << "TaskHandle" <<endl;
 	while(!handleStopReq)
 	{
 		Task tmpTask = taskQueue.Dequeue();
@@ -55,7 +56,6 @@ int ThreadPoolServer::DataHandle(char* Data)
 	else
 		file << Data << flush;
 
-	file.close();
 	return 0;
 }
 

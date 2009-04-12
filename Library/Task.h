@@ -2,7 +2,9 @@
 #define TASK_H
 
 #include "../Library/SocketWrapper.h"
+#include <iostream>
 
+using namespace std;
 
 class Task : public SocketWrapper
 {

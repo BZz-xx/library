@@ -7,7 +7,7 @@ Task::Task(int sockId, bool isStopTask) : SocketWrapper(sockId), stopTask(isStop
 
 Task::Task(const SocketWrapper& sock, bool isStopTask) : SocketWrapper(sock), stopTask(isStopTask)
 {
-	//ctor
+	cout<<"new incoming Task"<< endl;
 }
 
 Task::~Task()

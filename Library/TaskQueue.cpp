@@ -7,20 +7,24 @@ TaskQueue::TaskQueue() : stopped(false), monitor(), taskQueue()
 TaskQueue::~TaskQueue()
 {
 	monitor.Enter();
+	cout<<"enter in critical section"<<endl;
     while(! taskQueue.empty())
     {
         Task t = Dequeue();
         t.Shutdown(SocketShutdown(Both));
         t.Close();
     }
+    cout<<"leave from critical section"<<endl;
     monitor.Leave();
 }
 
 void TaskQueue::Enqueue(Task task)
 {
     monitor.Enter();
+    cout<<"enter in critical section"<<endl;
 	if (!stopped)
 		taskQueue.push(task);
+	cout<<"leave from critical section"<<endl;
 	monitor.Leave();
     monitor.PulseAll();
 }
