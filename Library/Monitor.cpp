@@ -11,7 +11,10 @@ Monitor::~Monitor()
 void Monitor::Enter()
 {
 	int i = 4000;
-	while (!mutex.TryLock() && i --> 0);
+	while (!mutex.TryLock() && i --> 0)
+	{
+		std::cout<<"."<<std::flush;
+	}
 	if (i == 0)
 		mutex.Lock();
 }
