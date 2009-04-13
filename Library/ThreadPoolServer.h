@@ -1,12 +1,12 @@
 #ifndef THREADPOOLSERVER_H
 #define THREADPOOLSERVER_H
 
-#include "../Library/SocketWrapper.h"
-#include "../Library/Monitor.h"
-#include "../Library/ThreadPool.h"
-#include "../Library/Task.h"
-#include "../Library/TaskQueue.h"
-#include "../Library/Listner.h"
+#include "SocketWrapper.h"
+#include "Monitor.h"
+#include "ThreadPool.h"
+#include "Task.h"
+#include "TaskQueue.h"
+#include "Listner.h"
 #include <iostream>
 #include <fstream>
 
@@ -14,15 +14,15 @@ using namespace std;
 class ThreadPoolServer
 {
 //FIELDS
-	static Listner listner;
-	static ThreadPool pool;
-	static TaskQueue taskQueue;
+	Listner listner;
+	ThreadPool pool;
+	TaskQueue taskQueue;
 	static const int port = 10080;
-	static bool handleStopReq;
+	bool handleStopReq;
 	static const unsigned short POOLSIZE = 4;
 	static const unsigned short LISTENQ = 1024;
 	static const unsigned short MAXLINE = 4096;
-	static string fileName;
+	string fileName;
 //METHODS
 //static constructor. WTF??
 /*
@@ -35,11 +35,11 @@ In file included from /root/library/Library/ThreadPoolServer.cpp:1:
 		~ThreadPoolServer();
 
 	public:
-		static void Run();
+		void Run();
 	private:
 		static void* TaskHandle(void* argv);
-		static bool SocketHandle(SocketWrapper sock);
-		static int DataHandle (char* Data);
+		bool SocketHandle(SocketWrapper sock);
+		int DataHandle (char* Data);
 };
 
 #endif // THREADPOOLSERVER_H

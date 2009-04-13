@@ -6,21 +6,23 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+class ThreadPoolServer;
+
 using namespace std;
 
 class Thread
 {
 //FIELDS
 		pthread_t thread;
-		string threadId;
+		int threadId;
 		void * (*routine)(void *);
 //METHOdS
 	public:
-		Thread(string name, void * (*function)(void *));
+		Thread(int name, void * (*function)(void *));
 		~Thread();
 
 	public:
-		void Run();
+		void Run(ThreadPoolServer* tps);
 		void Stop();
 };
 

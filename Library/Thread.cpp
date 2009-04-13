@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Thread::Thread(string name, void * (*function)(void *)) : threadId(name)
+Thread::Thread(int name, void * (*function)(void *)) : threadId(name)
 {
 	routine = function;
 }
@@ -12,10 +12,10 @@ Thread::~Thread()
 {
 }
 
-void Thread::Run()
+void Thread::Run(ThreadPoolServer* tps)
 {
 	cout<<"Thread "<<threadId<<" started"<<endl;
-	int err = pthread_create(&thread, 0, routine, 0);
+	int err = pthread_create(&thread, 0, routine, tps);
 	if (err < 0)
 		perror("Error Thread Run(ptread_create)");
 }

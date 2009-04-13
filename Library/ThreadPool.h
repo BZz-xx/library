@@ -4,6 +4,8 @@
 #include "Thread.h"
 #include <list>
 
+class ThreadPoolServer;
+
 class ThreadPool
 {
 //FIELDS
@@ -15,7 +17,7 @@ class ThreadPool
 		~ThreadPool();
 
 	public:
-		void Start(void * (*Routine)(void *));
+		void Start(void * (*Routine)(void *), ThreadPoolServer* tps);
 		void Stop();
 };
 

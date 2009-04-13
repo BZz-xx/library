@@ -2,13 +2,8 @@
 
 using namespace std;
 
-bool ThreadPoolServer::handleStopReq = false;
-ThreadPool ThreadPoolServer::pool = ThreadPool(ThreadPoolServer::POOLSIZE);
-TaskQueue ThreadPoolServer::taskQueue = TaskQueue();
-Listner ThreadPoolServer::listner = Listner(ThreadPoolServer::port);
-string ThreadPoolServer::fileName = "qwerty";
-
-ThreadPoolServer::ThreadPoolServer()
+ThreadPoolServer::ThreadPoolServer() :
+	handleStopReq(false), pool(POOLSIZE), taskQueue(), fileName("qwerty"), listner(port)
 {
 }
 
@@ -22,9 +17,9 @@ ThreadPoolServer::~ThreadPoolServer()
 
 void ThreadPoolServer::Run()
 {
-	pool.Start(&TaskHandle);
-
 	listner.Listen();
+
+	pool.Start(&TaskHandle, this);
 
 	while(!handleStopReq)
 		taskQueue.Enqueue(Task(listner.Accept(), false));
@@ -34,19 +29,23 @@ void ThreadPoolServer::Run()
 
 void* ThreadPoolServer::TaskHandle(void* argv)
 {
+	ThreadPoolServer tps = *reinterpret_cast<ThreadPoolServer*>(argv);
 	cout << "TaskHandle" <<endl;
-	while(!handleStopReq)
+	while(!tps.handleStopReq)
 	{
-		Task tmpTask = taskQueue.Dequeue();
-		if(tmpTask.isStopTask())
+		Task tmpTask = tps.taskQueue.Dequeue();
+		tps.SocketHandle(tmpTask);
+		/*if(tmpTask.isStopTask())
 			break;
-		if( SocketHandle(tmpTask) )
-			taskQueue.Enqueue(Task::getStopTask());
+		if( tps.SocketHandle(tmpTask) )
+			tps.taskQueue.Enqueue(Task::getStopTask());*/
 	}
 }
 
 int ThreadPoolServer::DataHandle(char* Data)
 {
+	cout<<Data<<flush;
+	return 0;
 	ofstream file ( fileName.data(), fstream::app );
 	if (file == NULL)
 	{

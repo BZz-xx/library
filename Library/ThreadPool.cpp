@@ -14,12 +14,12 @@ ThreadPool::~ThreadPool()
 	}
 }
 
-void ThreadPool::Start(void * (*Routine)(void * argv))
+void ThreadPool::Start(void * (*Routine)(void * argv), ThreadPoolServer* tps)
 {
 	for(int i = 0; i < capacity; ++i)
 	{
-		pool.push_back(Thread("", Routine));
-		pool.back().Run();
+		pool.push_back(Thread(i, Routine));
+		pool.back().Run(tps);
 	}
 }
 
