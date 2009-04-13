@@ -60,6 +60,7 @@ int ThreadPoolServer::DataHandle(char* Data)
 
 bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 {
+	cout<<"SocketHandle"<<endl;
 	char buffer[MAXLINE + 1];
 	bool hendlingResult = false;
 	//Прочитали все данные из сокета и обработали их по мере поступления

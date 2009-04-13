@@ -12,9 +12,7 @@ void Monitor::Enter()
 {
 	int i = 4000;
 	while (!mutex.TryLock() && i --> 0)
-	{
 		std::cout<<"."<<std::flush;
-	}
 	if (i == 0)
 		mutex.Lock();
 }
@@ -26,15 +24,18 @@ void Monitor::Leave()
 
 void Monitor::Wait()
 {
+	std::cout<<"Monitor::Wait"<<std::endl;
 	pthread_cond_wait(&(event.GetEvent()), &(mutex.GetMutex()));
 }
 
 void Monitor::Pulse()
 {
+	std::cout<<"Monitor::Pulse"<<std::endl;
 	event.Signal();
 }
 
 void Monitor::PulseAll()
 {
+	std::cout<<"Monitor::PulseAll"<<std::endl;
 	event.SignalAll();
 }
