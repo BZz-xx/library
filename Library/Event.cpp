@@ -3,14 +3,14 @@
 Event::Event()
 {
 	int err = pthread_cond_init(&event, 0);
-	if (err < 0)
+	if (err != 0)
 		perror("error in Event Constructor");
 }
 
 Event::~Event()
 {
 	int err = pthread_cond_destroy(&event);
-	if (err < 0)
+	if (err != 0)
 		perror("error in Event Destructor");
 }
 
@@ -21,10 +21,14 @@ EventType Event::GetEvent()
 
 void Event::Signal()
 {
-	pthread_cond_signal(&event);
+	int err = pthread_cond_signal(&event);
+	if (err != 0)
+		perror("error in Event Signal");
 }
 
 void Event::SignalAll()
 {
-	pthread_cond_broadcast(&event);
+	int err = pthread_cond_broadcast(&event);
+	if (err != 0)
+		perror("error in Event Signal");
 }

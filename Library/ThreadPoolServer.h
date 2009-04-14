@@ -2,7 +2,6 @@
 #define THREADPOOLSERVER_H
 
 #include "SocketWrapper.h"
-#include "Monitor.h"
 #include "ThreadPool.h"
 #include "Task.h"
 #include "TaskQueue.h"
@@ -24,12 +23,7 @@ class ThreadPoolServer
 	static const unsigned short MAXLINE = 4096;
 	string fileName;
 //METHODS
-//static constructor. WTF??
-/*
-Compiling: ThreadPoolServer.cpp
-In file included from /root/library/Library/ThreadPoolServer.cpp:1:
-/root/library/Library/ThreadPoolServer.h:26: error: constructor cannot be static member function
-*/
+
 	public:
 		ThreadPoolServer();
 		~ThreadPoolServer();

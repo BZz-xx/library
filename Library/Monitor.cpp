@@ -1,18 +1,9 @@
 #include "Monitor.h"
 
-Monitor::Monitor() : mutex(), event()
-{
-}
-
-Monitor::~Monitor()
-{
-}
-
 void Monitor::Enter()
 {
 	int i = 4000;
-	while (!mutex.TryLock() && i --> 0)
-		std::cout<<"."<<std::flush;
+	while (!mutex.TryLock() && i --> 0);
 	if (i == 0)
 		mutex.Lock();
 }
