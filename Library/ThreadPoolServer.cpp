@@ -2,8 +2,8 @@
 
 using namespace std;
 
-ThreadPoolServer::ThreadPoolServer() :
-	handleStopReq(false), pool(POOLSIZE), taskQueue(), fileName("qwerty"), listner(port)
+ThreadPoolServer::ThreadPoolServer(int portNum, string fName) :
+	port(portNum), fileName(fName), handleStopReq(false), pool(POOLSIZE), listner(portNum)
 {
 }
 
@@ -51,8 +51,6 @@ void* ThreadPoolServer::TaskHandle(void* argv)
 
 int ThreadPoolServer::DataHandle(char* Data)
 {
-	cout<<Data<<flush;
-	return 0;
 	ofstream file ( fileName.data(), fstream::app );
 	if (file == NULL)
 	{

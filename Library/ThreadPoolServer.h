@@ -16,7 +16,7 @@ class ThreadPoolServer
 	Listner listner;
 	ThreadPool pool;
 	TaskQueue taskQueue;
-	static const int port = 10080;
+	int port;
 	bool handleStopReq;
 	static const unsigned short POOLSIZE = 4;
 	static const unsigned short LISTENQ = 1024;
@@ -25,7 +25,7 @@ class ThreadPoolServer
 //METHODS
 
 	public:
-		ThreadPoolServer();
+		ThreadPoolServer(int portNum, string fName);
 		~ThreadPoolServer();
 
 	public:

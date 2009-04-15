@@ -67,7 +67,7 @@ int main( int argc, char** argv )
 {
 
 	/*::testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
+	return RUN_ALL_TESTS();*/
 	if (argc < 3)
 	{
 		cerr << "usage: ./Server portNum filename" << endl;
@@ -75,9 +75,9 @@ int main( int argc, char** argv )
 	}
 
     int Port = atoi ( argv [ 1 ] );
-	char* fileName = argv[2];*/
+	char* fileName = argv[2];
 
-	ThreadPoolServer tps;
+	ThreadPoolServer tps(Port, fileName);
 	tps.Run();
 
 	return 0;

@@ -30,7 +30,7 @@ int main( int argc, char** argv )
     int Port = atoi ( argv [ 1 ] );
 	char* fileName = argv[2];
 
-	SimpleServer server = SimpleServer(Port, fileName);
+	SimpleServer server(Port, fileName);
 	server.Run( &WriteDataToFile);
 
 	return 0;
