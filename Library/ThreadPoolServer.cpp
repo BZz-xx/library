@@ -25,16 +25,17 @@ void ThreadPoolServer::Run()
 		taskQueue.Enqueue(Task(listner.Accept(), false));
 
 	pool.Stop();
+	taskQueue.Stop();
 }
 
 void* ThreadPoolServer::TaskHandle(void* argv)
 {
-	ThreadPoolServer tps = *reinterpret_cast<ThreadPoolServer*>(argv);
+	ThreadPoolServer* tps = reinterpret_cast<ThreadPoolServer*>(argv);
 	cout << "TaskHandle" <<endl;
-	while(!tps.handleStopReq)
+	while(!tps->handleStopReq)
 	{
-		Task tmpTask = tps.taskQueue.Dequeue();
-		tps.SocketHandle(tmpTask);
+		Task tmpTask = tps->taskQueue.Dequeue();
+		tps->SocketHandle(tmpTask);
 		/*if(tmpTask.isStopTask())
 			break;
 		if( tps.SocketHandle(tmpTask) )

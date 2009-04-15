@@ -19,7 +19,7 @@ MutexType Mutex::GetMutex()
 
 bool Mutex::TryLock()
 {
-    return !pthread_mutex_trylock( &mutex ) ;
+    return (pthread_mutex_trylock( &mutex ) == 0);
 }
 
 void Mutex::Lock()

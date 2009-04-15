@@ -27,18 +27,18 @@ void TaskQueue::Enqueue(Task task)
 	cout<<">>>There are "<<taskQueue.size()<<" task in TaskQueue"<<endl;
 	cout<<"exit from critical section Enqueue"<<endl;
 	Monitor::Leave();
-	Monitor::PulseAll();
+//	Monitor::PulseAll();
 }
 
 Task TaskQueue::Dequeue()
 {
 	Monitor::Enter();
 	cout<<"enter in critical section Dequeue"<<endl;
-	while (taskQueue.empty() && !stopped)
+	while (taskQueue.size() == 0 && !stopped)
 	{
-		cout<<"no tasks exists. exit from critical section Dequeue. Wait"<<endl;
+//		cout<<"no tasks exists. Waiting in critical section Dequeue."<<endl;
 		Monitor::Leave();
-		Monitor::Wait();
+		Monitor::Enter();
 	}
 	if (stopped)
 	{
@@ -49,7 +49,7 @@ Task TaskQueue::Dequeue()
 	taskQueue.pop();
 	cout<<"exit from critical section Dequeue"<<endl;
     Monitor::Leave();
-    Monitor::PulseAll();
+//    Monitor::PulseAll();
     return t;
 }
 
