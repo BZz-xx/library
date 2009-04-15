@@ -24,10 +24,10 @@ void TaskQueue::Enqueue(Task task)
     cout<<"enter in critical section Enqueue"<<endl;
 	if (!stopped)
 		taskQueue.push(task);
+	cout<<">>>There are "<<taskQueue.size()<<" task in TaskQueue"<<endl;
 	cout<<"exit from critical section Enqueue"<<endl;
 	Monitor::Leave();
 	Monitor::PulseAll();
-    //monitor.Pulse();
 }
 
 Task TaskQueue::Dequeue()

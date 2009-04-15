@@ -1,5 +1,8 @@
 #include "Monitor.h"
 
+Mutex Monitor::mutex = Mutex();
+Event Monitor::event = Event();
+
 void Monitor::Enter()
 {
 	int i = 4000;
