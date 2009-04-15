@@ -9,15 +9,15 @@ class Monitor
 {
 //FIELDS
 	private:
-		static Mutex mutex;
-		static Event event;
+		Mutex mutex;
+		Event event;
 //METHODS
 	public:
-		static void Enter();
-		static void Leave();
-		static void Wait();
-		static void Pulse();
-		static void PulseAll();
+		void Enter();
+		void Leave();
+		void Wait();
+		void Pulse();
+		void PulseAll();
 };
 
 #endif // MONITOR_H

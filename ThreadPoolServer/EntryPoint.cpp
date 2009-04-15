@@ -77,7 +77,7 @@ int main( int argc, char** argv )
     int Port = atoi ( argv [ 1 ] );
 	char* fileName = argv[2];*/
 
-	ThreadPoolServer tps = ThreadPoolServer();
+	ThreadPoolServer tps;
 	tps.Run();
 
 	return 0;

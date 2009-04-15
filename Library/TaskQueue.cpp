@@ -1,12 +1,12 @@
 #include "TaskQueue.h"
 
-TaskQueue::TaskQueue() : stopped(false), taskQueue()
+TaskQueue::TaskQueue() : stopped(false), monitor(), taskQueue()
 {
 }
 
 TaskQueue::~TaskQueue()
 {
-	Monitor::Enter();
+	monitor.Enter();
 	cout<<"enter in critical section ~TaskQueue"<<endl;
     while(! taskQueue.empty())
     {
@@ -15,45 +15,48 @@ TaskQueue::~TaskQueue()
         t.Close();
     }
     cout<<"exit from critical section ~TaskQueue"<<endl;
-    Monitor::Leave();
+    monitor.Leave();
 }
 
 void TaskQueue::Enqueue(Task task)
 {
-    Monitor::Enter();
+    monitor.Enter();
     cout<<"enter in critical section Enqueue"<<endl;
 	if (!stopped)
 		taskQueue.push(task);
 	cout<<">>>There are "<<taskQueue.size()<<" task in TaskQueue"<<endl;
 	cout<<"exit from critical section Enqueue"<<endl;
-	Monitor::Leave();
-//	Monitor::PulseAll();
+	monitor.Leave();
+	monitor.PulseAll();
 }
 
 Task TaskQueue::Dequeue()
 {
-	Monitor::Enter();
+	monitor.Enter();
 	cout<<"enter in critical section Dequeue"<<endl;
 	while (taskQueue.size() == 0 && !stopped)
 	{
 //		cout<<"no tasks exists. Waiting in critical section Dequeue."<<endl;
-		Monitor::Leave();
-		Monitor::Enter();
+		monitor.Leave();
+//		monitor.Wait();
+		monitor.Enter();
 	}
 	if (stopped)
 	{
-		Monitor::Leave();
+		monitor.Leave();
 		return Task::getStopTask();
 	}
 	Task t = taskQueue.front();
 	taskQueue.pop();
 	cout<<"exit from critical section Dequeue"<<endl;
-    Monitor::Leave();
-//    Monitor::PulseAll();
+    monitor.Leave();
+//  monitor.PulseAll();
     return t;
 }
 
 void TaskQueue::Stop()
 {
+	monitor.Enter();
 	stopped = true;
+	monitor.Leave();
 }

@@ -11,6 +11,7 @@ class TaskQueue
 //FIELDS
     private:
 		bool stopped;
+		Monitor monitor;
         queue <Task, list <Task> > taskQueue;
 
 //METHODS

@@ -1,8 +1,5 @@
 #include "Monitor.h"
 
-Mutex Monitor::mutex = Mutex();
-Event Monitor::event = Event();
-
 void Monitor::Enter()
 {
 //	std::cout<<"Monitor::Enter"<<std::endl;

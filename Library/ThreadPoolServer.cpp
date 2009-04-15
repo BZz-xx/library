@@ -12,7 +12,7 @@ ThreadPoolServer::~ThreadPoolServer()
 	listner.Shutdown(SocketShutdown(Both));
 	listner.Close();
 
-	pool.Stop();
+//	pool.Stop();
 }
 
 void ThreadPoolServer::Run()
@@ -24,7 +24,12 @@ void ThreadPoolServer::Run()
 	while(!handleStopReq)
 		taskQueue.Enqueue(Task(listner.Accept(), false));
 
-	pool.Stop();
+	cout<<"Task establishing is finished"<<endl;
+}
+
+void ThreadPoolServer::Stop()
+{
+	handleStopReq = true;
 	taskQueue.Stop();
 }
 
@@ -35,12 +40,13 @@ void* ThreadPoolServer::TaskHandle(void* argv)
 	while(!tps->handleStopReq)
 	{
 		Task tmpTask = tps->taskQueue.Dequeue();
-		tps->SocketHandle(tmpTask);
-		/*if(tmpTask.isStopTask())
+//		tps->SocketHandle(tmpTask);
+		if(tmpTask.isStopTask())
 			break;
-		if( tps.SocketHandle(tmpTask) )
-			tps.taskQueue.Enqueue(Task::getStopTask());*/
+		if( tps->SocketHandle(tmpTask) )
+			tps->Stop();
 	}
+	cout << "TaskHandle finished" <<endl;
 }
 
 int ThreadPoolServer::DataHandle(char* Data)

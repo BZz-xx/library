@@ -34,6 +34,10 @@ class ThreadPoolServer
 		static void* TaskHandle(void* argv);
 		bool SocketHandle(SocketWrapper sock);
 		int DataHandle (char* Data);
+		void Stop();
+//NO MORE COPYING OBJECTS
+		ThreadPoolServer ( const ThreadPoolServer& );
+		void operator = ( const ThreadPoolServer& );
 };
 
 #endif // THREADPOOLSERVER_H
