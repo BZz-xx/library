@@ -16,11 +16,11 @@ class Mutex {
         ~Mutex();
 
     public:
-		MutexType GetMutex();
+		MutexType* GetMutex();
         void Lock();
         void Unlock();
         bool TryLock();
-
+//NO MORE COPYING OBJECTS
     private:
         Mutex( const Mutex& );
         void operator = ( const Mutex& );

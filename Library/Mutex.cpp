@@ -2,7 +2,8 @@
 
 Mutex::Mutex()
 {
-    pthread_mutex_init( &mutex, NULL );
+	pthread_mutex_init( &mutex, NULL );
+//	mutex = PTHREAD_MUTEX_INITIALIZER;
 }
 
 Mutex::~Mutex()
@@ -12,9 +13,9 @@ Mutex::~Mutex()
 		perror("error in Mutex Destructor");
 }
 
-MutexType Mutex::GetMutex()
+MutexType* Mutex::GetMutex()
 {
-	return mutex;
+	return &mutex;
 }
 
 bool Mutex::TryLock()

@@ -2,9 +2,10 @@
 
 Event::Event()
 {
-	int err = pthread_cond_init(&event, 0);
+	int err = pthread_cond_init(&event, NULL);
 	if (err != 0)
 		perror("error in Event Constructor");
+//	event = PTHREAD_COND_INITIALIZER;
 }
 
 Event::~Event()
@@ -14,9 +15,9 @@ Event::~Event()
 		perror("error in Event Destructor");
 }
 
-EventType Event::GetEvent()
+EventType* Event::GetEvent()
 {
-	return event;
+	return &event;
 }
 
 void Event::Signal()

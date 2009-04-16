@@ -17,7 +17,7 @@ class ThreadPoolServer
 	ThreadPool pool;
 	TaskQueue taskQueue;
 	int port;
-	bool handleStopReq;
+	bool handledStopReq;
 	static const unsigned short POOLSIZE = 4;
 	static const unsigned short LISTENQ = 1024;
 	static const unsigned short MAXLINE = 4096;

@@ -16,9 +16,13 @@ class Event
 		~Event();
 
 	public:
-		EventType GetEvent();
+		EventType* GetEvent();
 		void Signal();
 		void SignalAll();
+	private:
+//NO MORE COPYING OBJECTS
+		Event ( const Event& );
+		void operator = ( const Event& );
 };
 
 #endif // EVENT_H

@@ -3,16 +3,12 @@
 using namespace std;
 
 ThreadPoolServer::ThreadPoolServer(int portNum, string fName) :
-	port(portNum), fileName(fName), handleStopReq(false), pool(POOLSIZE), listner(portNum)
+	port(portNum), fileName(fName), handledStopReq(false), pool(POOLSIZE), listner(portNum)
 {
 }
 
 ThreadPoolServer::~ThreadPoolServer()
 {
-	listner.Shutdown(SocketShutdown(Both));
-	listner.Close();
-
-//	pool.Stop();
 }
 
 void ThreadPoolServer::Run()
@@ -21,32 +17,35 @@ void ThreadPoolServer::Run()
 
 	pool.Start(&TaskHandle, this);
 
-	while(!handleStopReq)
+	while(!handledStopReq)
 		taskQueue.Enqueue(Task(listner.Accept(), false));
 
-	cout<<"Task establishing is finished"<<endl;
+	cout<<"###########Task establishing is finished"<<endl;
 }
 
 void ThreadPoolServer::Stop()
 {
-	handleStopReq = true;
+	cout<<"ThreadPoolServer::Stop"<<endl;
+	handledStopReq = true;
 	taskQueue.Stop();
+	listner.Close();
+	pool.Stop();
 }
 
 void* ThreadPoolServer::TaskHandle(void* argv)
 {
 	ThreadPoolServer* tps = reinterpret_cast<ThreadPoolServer*>(argv);
 	cout << "TaskHandle" <<endl;
-	while(!tps->handleStopReq)
+	while(!tps->handledStopReq)
 	{
 		Task tmpTask = tps->taskQueue.Dequeue();
-//		tps->SocketHandle(tmpTask);
 		if(tmpTask.isStopTask())
 			break;
 		if( tps->SocketHandle(tmpTask) )
 			tps->Stop();
 	}
 	cout << "TaskHandle finished" <<endl;
+	return 0;
 }
 
 int ThreadPoolServer::DataHandle(char* Data)
