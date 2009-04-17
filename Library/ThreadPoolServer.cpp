@@ -28,8 +28,8 @@ void ThreadPoolServer::Stop()
 	cout<<"ThreadPoolServer::Stop"<<endl;
 	handledStopReq = true;
 	taskQueue.Stop();
+	listner.Shutdown(SocketShutdown(Both));
 	listner.Close();
-	pool.Stop();
 }
 
 void* ThreadPoolServer::TaskHandle(void* argv)
