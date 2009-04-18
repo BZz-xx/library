@@ -37,7 +37,8 @@ void SimpleServer::Run(int ( * Handler ) ( string, char*))
 
 	while(!handleStopReq)
 	{
-		if (servSock.Select())
+		int countFD = servSock.Select();
+		for (int i = 0; i < countFD; i++)
 		{
 			SocketWrapper clntSock = servSock.Accept();
 			handleStopReq = Handle(clntSock, Handler);

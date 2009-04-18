@@ -17,13 +17,17 @@ void ThreadPoolServer::Run()
 
 	pool.Start(&TaskHandle, this);
 
+	int countFD;
 	while(!handledStopReq)
-		if (listner.Select())
+	{
+		countFD = listner.Select();
+		for (int i = 0; i < countFD; i++)
 			taskQueue.Enqueue(Task(listner.Accept(), false));
+	}
 
 	cout<<"###########Task establishing is finished"<<endl;
 
-	pool.Stop();
+//	pool.Stop();
 }
 
 void ThreadPoolServer::Stop()

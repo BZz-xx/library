@@ -34,7 +34,7 @@ public:
 	void Bind(sockaddr_in * addr);
 	void Listen(int maxConnection = SOMAXCONN);
 	SocketWrapper Accept();
-	bool Select(int microsec = 100);
+	int Select(int microsec = 100);
 
 	int Receive(char* buffer, int length);
 	int Receive(char* buffer, int offset, int length);
