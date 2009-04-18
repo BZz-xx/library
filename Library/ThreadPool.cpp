@@ -27,8 +27,8 @@ void ThreadPool::Stop()
 {
 	for(int i = 0; i < capacity; ++i)
 	{
-		Thread t = pool.back();
-		pool.pop_back();
+		Thread t = pool.front();
+		pool.pop_front();
 		t.Stop();
 	}
 }

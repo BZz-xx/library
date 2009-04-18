@@ -26,8 +26,8 @@ void TaskQueue::Enqueue(Task task)
 		taskQueue.push(task);
 	cout<<">>>There are "<<taskQueue.size()<<" task in TaskQueue"<<endl;
 	cout<<"exit from critical section Enqueue"<<endl;
-	monitor.PulseAll();
-//	monitor.Pulse();
+//	monitor.PulseAll();
+	monitor.Pulse();
 	monitor.Leave();
 }
 
@@ -56,5 +56,6 @@ void TaskQueue::Stop()
 {
 	monitor.Enter();
 	stopped = true;
+	monitor.PulseAll();
 	monitor.Leave();
 }

@@ -41,6 +41,27 @@ SocketWrapper SocketWrapper::Accept()
 	return SocketWrapper(connfd);
 }
 
+bool SocketWrapper::Select(int microsec)
+{
+	fd_set fdset_r, fdset_w, fdset_e;
+	timeval timeout={microsec / 1000, microsec % 1000};
+
+	FD_ZERO(&fdset_r);
+	FD_ZERO(&fdset_e);
+	FD_ZERO(&fdset_w);
+
+	FD_SET(sockid, &fdset_r);
+	FD_SET(sockid, &fdset_w);
+
+	int err = select(sockid + 1, &fdset_r, &fdset_w, &fdset_e, &timeout);
+	if (err <= 0)
+		return false;
+	if (FD_ISSET(sockid, &fdset_r) || FD_ISSET(sockid, &fdset_w))
+		return true;
+	else
+		return false;
+}
+
 int SocketWrapper::Receive(char* buffer, int length)
 {
 	int n = recv(sockid, buffer, length, 0);

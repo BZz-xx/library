@@ -22,10 +22,11 @@ void Thread::Run(ThreadPoolServer* tps)
 
 void Thread::Stop()
 {
-	int retval = -1;
 	int err = pthread_detach(thread);
 	if (err < 0)
 		perror("Error Thread Stop(ptread_detach)");
+	err = pthread_cancel(thread);
+	if (err != 0)
+		perror("Error Thread Stop(pthread_cancel)");
 	cout<<"Thread "<<threadId<<" closed"<<endl;
-	pthread_exit(&retval);
 }
