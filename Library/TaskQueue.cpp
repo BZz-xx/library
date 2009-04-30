@@ -8,9 +8,11 @@ TaskQueue::~TaskQueue()
 {
 	monitor.Enter();
 	cout<<"enter in critical section ~TaskQueue"<<endl;
+	cout<<"There are "<<taskQueue.size()<<" tasks in TaskQueue yet"<<endl;
     while(! taskQueue.empty())
     {
-        Task t = Dequeue();
+        Task t = taskQueue.front();
+		taskQueue.pop();
         t.Shutdown(SocketShutdown(Both));
         t.Close();
     }
@@ -35,13 +37,14 @@ Task TaskQueue::Dequeue()
 {
 	monitor.Enter();
 	cout<<"enter in critical section Dequeue"<<endl;
-	while (taskQueue.size() == 0 && !stopped)
+	while (taskQueue.empty() && !stopped)
 	{
 		cout<<"no tasks exists. Waiting in critical section Dequeue."<<endl;
 		monitor.Wait();
 	}
 	if (stopped)
 	{
+		cout<<"sr"<<endl;
 		monitor.Leave();
 		return Task::getStopTask();
 	}
