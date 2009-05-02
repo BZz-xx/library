@@ -9,6 +9,9 @@
 #include <iostream>
 #include <fstream>
 
+#include <stdlib.h>
+#include <time.h>
+
 using namespace std;
 class ThreadPoolServer
 {
@@ -33,7 +36,7 @@ class ThreadPoolServer
 	private:
 		static void* TaskHandle(void* argv);
 		bool SocketHandle(SocketWrapper sock);
-		int DataHandle (char* Data);
+		int DataHandle (char* Data, int count);
 		void Stop();
 //NO MORE COPYING OBJECTS
 		ThreadPoolServer ( const ThreadPoolServer& );

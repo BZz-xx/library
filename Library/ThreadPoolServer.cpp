@@ -57,20 +57,6 @@ void* ThreadPoolServer::TaskHandle(void* argv)
 	return 0;
 }
 
-int ThreadPoolServer::DataHandle(char* Data)
-{
-	ofstream file ( fileName.data(), fstream::app );
-	if (file == NULL)
-	{
-		perror("file opening error");
-		return -1;
-	}
-	else
-		file << Data << flush;
-
-	return 0;
-}
-
 bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 {
 //	cout<<"SocketHandle"<<endl;
@@ -81,7 +67,7 @@ bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
     while ((n = sock.Receive(buffer, MAXLINE) ) > 0)
 	{
 		totalBytesRead += n;
-		DataHandle(buffer);
+		DataHandle(buffer, n);
 	}
 	sock.Shutdown( SocketShutdown(Read) );
 //	cout << "readed " << totalBytesRead << " bytes" << endl;
@@ -94,7 +80,7 @@ bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 	//Так на всякий случай
 	buffer [0] = '\n';
 	buffer [1] = 0;
-	DataHandle(buffer);
+	DataHandle(buffer, 2);
 	//Ответили клиенту
 	sock.Send("Ok");
 	sock.Shutdown( SocketShutdown(Write) );
@@ -102,4 +88,41 @@ bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 
 	return hendlingResult;
 }
+/*
+//on NET test
+int ThreadPoolServer::DataHandle(char* Data, int count)
+{
+	return 0;
+}
+*/
+//on HDD test
+int ThreadPoolServer::DataHandle(char* Data, int count)
+{
+	srand ( time(NULL) );
+	string fn = fileName;
+	fn += rand() % 10 + 48;
+	ofstream file ( fn.data(), fstream::app );
+	if (file == NULL)
+	{
+		perror("file opening error");
+		return -1;
+	}
+	else
+		for (int i = 0; i < 10; i++)
+			file << Data << flush;
+
+	return 0;
+}
+/*
+// on CPU test
+int ThreadPoolServer::DataHandle(char* Data, int count)
+{
+	srand ( time(NULL) );
+
+	int dataHash;
+	for(int i = 0; i < count; i++)
+		dataHash += Data[i]*Data[i+(rand()%3 - 1)*1024];
+	return dataHash;
+}
+*/
 
