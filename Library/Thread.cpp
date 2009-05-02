@@ -14,7 +14,7 @@ Thread::~Thread()
 
 void Thread::Run(ThreadPoolServer* tps)
 {
-	cout<<"Thread "<<threadId<<" started"<<endl;
+//	cout<<"Thread "<<threadId<<" started"<<endl;
 	int err = pthread_create(&thread, 0, routine, tps);
 	if (err < 0)
 		perror("Error Thread Run(ptread_create)");
@@ -28,5 +28,5 @@ void Thread::Stop()
 	err = pthread_cancel(thread);
 	if (err != 0)
 		perror("Error Thread Stop(pthread_cancel)");
-	cout<<"Thread "<<threadId<<" closed"<<endl;
+//	cout<<"Thread "<<threadId<<" closed"<<endl;
 }

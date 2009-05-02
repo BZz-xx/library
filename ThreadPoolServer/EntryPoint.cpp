@@ -23,7 +23,7 @@ int WriteDataToFile(string FileName, char* Data)
 	file.close();
 	return 0;
 }
-
+/*
 TEST(Mutex, TestOne)
 {
 	Mutex m;
@@ -129,7 +129,7 @@ TEST(MultiThreading, testTWO)
 	ASSERT_EQ(2,WS::count);
 }
 //////////////////////////////////////////////////////////////////////////////////
-
+*/
 int main( int argc, char** argv )
 {
 

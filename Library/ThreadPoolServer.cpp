@@ -21,20 +21,20 @@ void ThreadPoolServer::Run()
 
 	while(!handledStopReq)
 	{
-		countFD = listner.Select(1000);
-		cout<<"$$$$$$$$$$$$$$ There are "<<countFD<<" new incoming Tasks"<<endl;
+		countFD = listner.Select();
+//		cout<<"$$$$$$$$$$$$$$ There are "<<countFD<<" new incoming Tasks"<<endl;
 		for (int i = 0; i < countFD; i++)
 			taskQueue.Enqueue(Task(listner.Accept(), false));
 	}
 
-	cout<<"###########Task establishing is finished"<<endl;
+//	cout<<"###########Task establishing is finished"<<endl;
 
 	pool.Stop();
 }
 
 void ThreadPoolServer::Stop()
 {
-	cout<<"ThreadPoolServer::Stop"<<endl;
+//	cout<<"ThreadPoolServer::Stop"<<endl;
 	handledStopReq = true;
 	taskQueue.Stop();
 	listner.Shutdown(SocketShutdown(Both));
@@ -44,7 +44,7 @@ void ThreadPoolServer::Stop()
 void* ThreadPoolServer::TaskHandle(void* argv)
 {
 	ThreadPoolServer* tps = reinterpret_cast<ThreadPoolServer*>(argv);
-	cout << "TaskHandle" <<endl;
+//	cout << "TaskHandle" <<endl;
 	while(!tps->handledStopReq)
 	{
 		Task tmpTask = tps->taskQueue.Dequeue();
@@ -53,7 +53,7 @@ void* ThreadPoolServer::TaskHandle(void* argv)
 		if( tps->SocketHandle(tmpTask) )
 			tps->Stop();
 	}
-	cout << "TaskHandle finished" <<endl;
+//	cout << "TaskHandle finished" <<endl;
 	return 0;
 }
 
@@ -73,7 +73,7 @@ int ThreadPoolServer::DataHandle(char* Data)
 
 bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 {
-	cout<<"SocketHandle"<<endl;
+//	cout<<"SocketHandle"<<endl;
 	char buffer[MAXLINE + 1];
 	bool hendlingResult = false;
 	//Прочитали все данные из сокета и обработали их по мере поступления
@@ -84,7 +84,7 @@ bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 		DataHandle(buffer);
 	}
 	sock.Shutdown( SocketShutdown(Read) );
-	cout << "readed " << totalBytesRead << " bytes" << endl;
+//	cout << "readed " << totalBytesRead << " bytes" << endl;
 	//Проверка на StopRequest
 	if (buffer[0]=='s' && buffer[1]=='t' && buffer[2]=='o' && buffer[3]=='p' )
 	{
@@ -98,6 +98,7 @@ bool ThreadPoolServer::SocketHandle(SocketWrapper sock)
 	//Ответили клиенту
 	sock.Send("Ok");
 	sock.Shutdown( SocketShutdown(Write) );
+	sock.Close();
 
 	return hendlingResult;
 }
